@@ -1,56 +1,32 @@
-# whmcs-server-allocator
-Server allocation hook for whmcs
+# Server Allocator Hook for WHMCS
 
-Tested on WHMSC V8.10 With php81
-Tested with cPanel - Should also work for Plesk, Directadmin, and reseller hosting plans
+This hook works on configurable options Location only. When a client selects a location, the hook will allocate the same selected plan with the updated server location. If you have multiple servers in the same location, this hook will also allocate a random server for that same selected location. This hook does not currently run any auto set-ups; it only allocates a server.
 
+## Required Files
 
-Having multiple Servers in multiple locations often mean setting up multiple product groups in whmcs which all have multiple plans to be set up it becomes a lot of multiples 
+This setup requires two files:
+1. The server allocator hook file.
+2. A configuration file containing the server/location mappings used by the hook.
 
-with this hook that is no longer an issue and best of all its a solution to what is otherwise normally a very costly solution 
+The configuration file determines which servers should be assigned to specific product groups based on the selected location. Servers must be listed by their WHMCS server IDs. Disabled servers in WHMCS are automatically skipped. If no enabled servers are available for the selected location, an error will be logged. Location keys in the configuration must exactly match the values set in the WHMCS configurable option for “Location”.
 
-The hooks functions
+## How to Use
 
-Provision web hosting accounts to servers based on a single configurable option 
-Eliminates the need to create multiple Product Groups for the same service in WHMCS 
-Have one Product group for Shared Hosting, cPanel Hosting, Reseller Hosting no matter the location
+Only one product group is required such as Shared Hosting. The product group should only include the hosting plans that you would consider to be your default or recommended location. If your company is UK based then you would have the plans that are on your UK server as the default showing. All others can be hidden or will no longer be needed.
 
+WHM package names must be identical on each individual server. If for example you have package names Personal and Business on your default location then they must all be named Personal and Business on each server regardless of location. Any package name mismatches will cause an error.
 
-To use the hook you must first make sure that these steps have been take or it will result in error
+### Configurable Options Setup
 
-First of all the packages in WHM all need to have the same identical names so for example 
+Create a configurable option group such as “cPanel Shared Location”.
 
-Your UK cPanel Server 
-Package names created 
-Bronze Silver Gold
+Add a configurable option named:  
+**Location**
 
-Your US cPanel Server
-Package names created 
-Bronze Silver Gold
+Add option values such as:
 
-Your EU cPanel Server
-Package names created 
-Bronze Silver Gold
+- UK (Change this to your default location)
+- Location 2
+- Location 3
 
-Now You have made sure that all your package names match throughout you will need to create a configurable option in whmcs 
-
-To do this click on the spanner icon top right find system settings click on it now on the left hand side look for products and services select that option
-Now look for Configuarable options and select it.
-
-The configuarable options defined here will determine which server location the account should be provisioned too
-
-In front of you, you should now see the option Create a new group click on that 
-Enter Group Name - Something like cPanel server location
-Description - cPanel shared hosting server locations
-
-Assigned Products - Select the plans this configurable option will be assigned to 
-Remember you only need to select the plans that are on what you would consider as your default location
-
-Click on save changes
-
-You'll now see the option add new configurable option click on it
-Option name - enter - Location
-Add Option Enter the location you want to be your default server so if your based in the UK put UK as the first option if your in USA put USA first click save changes then continue to add options untill you have added all the locations such as UK USA GERMANY etc
-
-
-
+Assign the configurable option group to your default hosting plans.
