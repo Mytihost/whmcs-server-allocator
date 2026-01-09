@@ -2,6 +2,13 @@
 
 This hook works on configurable options Location only. When a client selects a location, the hook will allocate the same selected plan with the updated server location. If you have multiple servers in the same location, this hook will also allocate a random server for that same selected location. This hook does not currently run any auto set-ups; it only allocates a server.
 
+## Compatibility
+
+This hook has been tested with:
+- WHMCS 8.10
+- PHP 8.1
+- cPanel hosting only
+
 ## Required Files
 
 This setup requires two files:
@@ -20,8 +27,8 @@ WHM package names must be identical on each individual server. If for example yo
 
 Create a configurable option group such as “cPanel Shared Location”.
 
-Add a configurable option named:  
-**Location**
+Add a configurable option named:
+Location
 
 Add option values such as:
 
